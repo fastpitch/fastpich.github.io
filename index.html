@@ -1,7 +1,593 @@
-<!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>FastPitch: Parallel Text-to-speech with Pitch Prediction</title>
+  </head>
+  <body>
+
+    <div class="container">
+
+      <h1>FastPitch: Parallel Text-to-speech with Pitch Prediction</h1>
+
+      </br>
+      </br>
+
+      <h2>Abstract</h2>
+      <p>
+      We present FastPitch, a fully-parallel text-to-speech model based on FastSpeech, conditioned on fundamental frequency contours. The model predicts pitch contours during inference, and generates speech that could be further controlled with predicted contours. FastPitch can thus change the perceived emotional state of the speaker or put emphasis on certain lexical units. We find that uniformly increasing or decreasing the pitch with FastPitch generates speech that resembles the voluntary modulation of voice. Conditioning on frequency contours improves the quality of synthesized speech, making it comparable to state-of-the-art. It does not introduce an overhead, and FastPitch retains the favorable, fully-parallel Transformer architecture of FastSpeech with a similar speed of mel-scale spectrogram synthesis, orders of magnitude faster than real-time.
+      </p>
+
+      <p><a href="source_code.html">source code (published May 18th, 2020)</a></p>
+      <p><a href="article.html">article (published June 15th, 2020)</a></p>
+
+      </br>
+
+
+      <h2>Audio Samples</h2>
+      <p>
+      The samples come from our development subset of the LJSpeech-1.1 dataset.
+      In all cases we use the same WaveGlow vocoder.
+      A single FastPitch model has been used.
+      We present examples of automatic pitch transformations applied during
+      synthesis.
+      </p>
+
+      </br>
+
+
+      <h4><em>
+        The criteria in effect prior to November twenty-two, nineteen sixty-three, for determining whether to accept material for the PRS general files
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Ground truth</td>
+        <td>Ground truth mel + WaveGlow</td>
+        <td>Tacotron2</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/gt/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/gt_mel/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/tacotron2/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch</td>
+        <td>FastPitch (amplified)</td>
+        <td>FastPitch (inverted)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_amplify/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_invert/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch (flattened)</td>
+        <td>FastPitch (-50 Hz)</td>
+        <td>FastPitch (+50 Hz)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_flatten/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift-50/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift50/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+
+
+      <h4><em>
+        Chapter seven. Lee Harvey Oswald: Background and Possible Motives, Part one.
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Ground truth</td>
+        <td>Ground truth mel + WaveGlow</td>
+        <td>Tacotron2</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/gt/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/gt_mel/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/tacotron2/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch</td>
+        <td>FastPitch (amplified)</td>
+        <td>FastPitch (inverted)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_amplify/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_invert/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch (flattened)</td>
+        <td>FastPitch (-50 Hz)</td>
+        <td>FastPitch (+50 Hz)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_flatten/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift-50/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift50/chapter_seven_lee_harvey_oswald_background.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+
+
+      <h4><em>
+        which he kept concealed in a hiding-place with a trap-door just under his bed.
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Ground truth</td>
+        <td>Ground truth mel + WaveGlow</td>
+        <td>Tacotron2</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/gt/which_he_kept_concealed_in_a.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/gt_mel/which_he_kept_concealed_in_a.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/tacotron2/which_he_kept_concealed_in_a.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch</td>
+        <td>FastPitch (amplified)</td>
+        <td>FastPitch (inverted)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch/which_he_kept_concealed_in_a.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_amplify/which_he_kept_concealed_in_a.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_invert/which_he_kept_concealed_in_a.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch (flattened)</td>
+        <td>FastPitch (-50 Hz)</td>
+        <td>FastPitch (+50 Hz)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_flatten/which_he_kept_concealed_in_a.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift-50/which_he_kept_concealed_in_a.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift50/which_he_kept_concealed_in_a.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+
+
+      <h4><em>
+        At the first the boxes were impounded, opened, and found to contain many of O'Connor's effects.
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Ground truth</td>
+        <td>Ground truth mel + WaveGlow</td>
+        <td>Tacotron2</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/gt/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/gt_mel/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/tacotron2/at_the_first_the_boxes_were.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch</td>
+        <td>FastPitch (amplified)</td>
+        <td>FastPitch (inverted)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_amplify/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_invert/at_the_first_the_boxes_were.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch (flattened)</td>
+        <td>FastPitch (-50 Hz)</td>
+        <td>FastPitch (+50 Hz)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_flatten/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift-50/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift50/at_the_first_the_boxes_were.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+
+
+      <h4><em>
+        He was in consequence put out of the protection of their internal law, end quote. Their code was a subject of some curiosity.
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Ground truth</td>
+        <td>Ground truth mel + WaveGlow</td>
+        <td>Tacotron2</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/gt/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/gt_mel/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/tacotron2/he_was_in_consequence_put_out.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch</td>
+        <td>FastPitch (amplified)</td>
+        <td>FastPitch (inverted)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_amplify/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_invert/he_was_in_consequence_put_out.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch (flattened)</td>
+        <td>FastPitch (-50 Hz)</td>
+        <td>FastPitch (+50 Hz)</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_flatten/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift-50/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_shift50/he_was_in_consequence_put_out.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+
+
+      </br>
+
+
+      <h2>Audio Samples: Multi-speaker</h2>
+      <p>
+      We present samples synthesized with a multi-speaker FastPitch,
+      trained on a dataset with three speakers (57 hours of data).
+      The output of the model is conditioned on the speaker embedding.
+      </p>
+
+      </br>
+
+
+      <h4><em>
+        The criteria in effect prior to November twenty-two, nineteen sixty-three, for determining whether to accept material for the PRS general files
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch LJS</td>
+        <td>FastPitch Sally</td>
+        <td>FastPitch Helen</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_ljs/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_sally/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_helen/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch 50% LJS / 50% Sally</td>
+        <td>FastPitch 50% Sally / 50% Helen</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_ljs_sally/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_sally_helen/the_criteria_in_effect_prior_to.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+      <h4><em>
+        At the first the boxes were impounded, opened, and found to contain many of O'Connor's effects.
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch LJS</td>
+        <td>FastPitch Sally</td>
+        <td>FastPitch Helen</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_ljs/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_sally/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_helen/at_the_first_the_boxes_were.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch 50% LJS / 50% Sally</td>
+        <td>FastPitch 50% Sally / 50% Helen</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_ljs_sally/at_the_first_the_boxes_were.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_sally_helen/at_the_first_the_boxes_were.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+      <h4><em>
+        He was in consequence put out of the protection of their internal law, end quote. Their code was a subject of some curiosity.
+      </em></h4>
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch LJS</td>
+        <td>FastPitch Sally</td>
+        <td>FastPitch Helen</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_ljs/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_sally/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_helen/he_was_in_consequence_put_out.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+        <table>
+        <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>FastPitch 50% LJS / 50% Sally</td>
+        <td>FastPitch 50% Sally / 50% Helen</td>
+        </tr>
+        <tr>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_ljs_sally/he_was_in_consequence_put_out.wav"/></audio></td>
+        <td><audio controls="" ><source src="samples/fastpitch_multi_sally_helen/he_was_in_consequence_put_out.wav"/></audio></td>
+        </tr>
+        </tbody>
+        </table>
+
+      </br>
+
+    </div>
+
+  </body>
 </html>
